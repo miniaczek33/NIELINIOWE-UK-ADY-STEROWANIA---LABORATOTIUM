@@ -1,0 +1,24 @@
+%drukarka = serial('/dev/ttyUSB0')
+%drukarka.BaudRate = 115200
+%fopen(drukarka)
+%drukarka
+stare1 = 0;
+stare2 = round(1000*sin(0+(2*pi/3)))
+stare3 = round(1000*sin(0+(4*pi/3)))
+for t = 0:0.01:12.56
+    kroki1 = round(1000*sin(t));
+    kroki2 = round(1000*sin(t+(2*pi/3)));
+    kroki3 = round(1000*sin(t+(4*pi/3)));
+fprintf(drukarka, 'a %d b %d c %d \n', [kroki1-stare1, kroki2-stare2, kroki3-stare3])
+[kroki1-stare1, kroki2-stare2, kroki3-stare3]
+while(drukarka.BytesAvailable == 0)
+    ;
+end
+while(drukarka.BytesAvailable)
+    fscanf(drukarka);
+end
+stare1 = kroki1;
+stare2 = kroki2;
+stare3 = kroki3;
+
+end

@@ -1,0 +1,42 @@
+#define TEMP_0_PIN         13   // Analog Input
+#define TEMP_1_PIN         15   // Analog Input
+#define TEMP_BED_PIN       14   // Analog Input
+#define HEATER_0_PIN       10
+#define a -4.52095923146464e-07
+#define b 0.000771676586865781
+#define c -0.546501992496493
+#define d 242.002559782888
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(16,17,23,25,27,29);
+
+int temp;
+int zliczam = 0;
+double x,y;
+void setup()
+{
+  Serial.begin(115200);
+  lcd.begin(20,4);
+  pinMode(HEATER_0_PIN, OUTPUT);
+}
+
+void loop() 
+{
+  temp = analogRead(TEMP_0_PIN);
+  Serial.println(temp);
+  lcd.setCursor(0,0);
+  x = double(temp);
+  y = a*x*x*x+b*x*x+c*x+d;
+  lcd.print(y);
+  if (zliczam <= 50)
+  {
+    digitalWrite (HEATER_0_PIN, HIGH);
+    zliczam++;
+  }
+  else
+  {
+    digitalWrite(HEATER_0_PIN, LOW);
+  }
+  delay(100);
+  
+}

@@ -1,0 +1,4 @@
+drukarka = serial('/dev/ttyUSB1')
+drukarka.BaudRate = 115200
+%drukarka.Terminator = 'CR/TL'
+fopen(drukarka)
